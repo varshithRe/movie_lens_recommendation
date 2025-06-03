@@ -1,28 +1,19 @@
-# Use an official Python base image
-FROM python:3.10-slim
+FROM python:3.9-slim
 
-# Set working directory
+# Install system dependencies
+RUN apt-get update && apt-get install -y gcc g++ build-essential
+
+# Set workdir
 WORKDIR /app
 
-# Install build dependencies for scikit-surprise
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    g++ \
-    libatlas-base-dev \
-    libffi-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy project files
+# Copy files
 COPY . .
 
-# Install Python dependencies
+# Install Python packages
 RUN pip install --upgrade pip \
+ && pip install numpy==1.23.5 \
  && pip install scikit-surprise \
  && pip install -r requirements.txt
 
-# Expose the port
-EXPOSE 8000
-
-# Start the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start command
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
