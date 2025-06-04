@@ -1,7 +1,6 @@
 #Byte-compiled/cache files
 __pycache__/
 movie-recs/
-models/*.pkl
 data/ratings10m.dat
 .vscode/
 .DS_Store
